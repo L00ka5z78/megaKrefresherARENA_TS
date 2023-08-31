@@ -2,6 +2,8 @@ import express, { static as eStatic, urlencoded } from 'express';
 import 'express-async-errors';
 import methodOverride from 'method-override';
 import { engine } from 'express-handlebars';
+import { homeRouter } from './routers/home';
+import { warriorRouter } from './routers/warrior';
 
 const app = express();
 
@@ -20,9 +22,10 @@ app.engine(
   })
 );
 app.set('view engine', '.hbs');
-app.get('/', (req, res) => {
-  res.send('HIIII!');
-});
+
+app.use('/', homeRouter);
+app.use('/warrior', warriorRouter);
+
 // app.use(handleError)
 app.listen(3000, 'localhost', () => {
   console.log('Server is ON and running on http://localhost:3000');

@@ -1,28 +1,20 @@
+import { pool } from '../utils/db';
 import { ValidationError } from '../utils/error';
 import { v4 as uuid } from 'uuid';
 
 export class WarriorRecord {
   public id?: string;
-  /**
-   * namie is always unique. Example
-   * `console.log('abcdefg')  -writing own tips in help menu
-   * ```JS
-   *const obj = new warriorRecord();
-   * console.log(obj.name);
-   *
-   * const w = new WarriorRecord(); moved from index.ts
-   * w.
-   * ```
-   */
+
   public readonly name: string;
   public readonly power: number;
   public readonly defence: number;
   public readonly stamina: number;
   public readonly agility: number;
-  public readonly wins?: number;
+  public wins?: number;
 
   constructor(obj: Omit<WarriorRecord, 'insert' | 'update'>) {
     const { id, name, stamina, defence, power, wins, agility } = obj;
+    const stats = [stamina, defence, power, agility];
 
     const sum = [stamina, defence, power, agility].reduce(
       (prev, curr) => prev + curr,
@@ -33,6 +25,12 @@ export class WarriorRecord {
         `All stats sum has to be 10. Now it is ${sum}.`
       );
     }
+    for (const stat of stats) {
+      if (stat < 1) {
+        throw new ValidationError(`Every stat has to be greater than 1`);
+      }
+    }
+
     if (name.length < 3 && name.length > 50) {
       throw new ValidationError(
         `Name has to be between 3 - 50 characters long Right now is ${name.length}`
@@ -40,7 +38,7 @@ export class WarriorRecord {
     }
 
     this.id = id;
-    this.wins = wins ?? 0;
+    this.wins = wins;
     this.name = name;
     this.stamina = stamina;
     this.power = power;
@@ -51,13 +49,37 @@ export class WarriorRecord {
     if (!this.id) {
       this.id = uuid();
     }
+
+    if (typeof this.wins !== 'number') {
+      this.wins = 0;
+    }
+
+    await pool.execute(
+      'INSERT INTO `warriors`(`id`, `name`, `power`, `defence`, `stamina`, `agility`, `wins`) VALUES (:id, :name, :power, :defence, :stamina, :agility, :wins)',
+      {
+        id: this.id,
+        name: this.name,
+        power: this.power,
+        defence: this.defence,
+        stamina: this.stamina,
+        agility: this.agility,
+        wins: this.wins,
+      }
+    );
+    return this.id;
   }
 
   async update(): Promise<void> {}
 
-  static async getOne(id: string): Promise<WarriorRecord | null> {}
+  static async getOne(id: string): Promise<WarriorRecord | null> {
+    return null;
+  }
 
-  static async listAll(): Promise<WarriorRecord[]> {}
+  static async listAll(): Promise<WarriorRecord[]> {
+    return [];
+  }
 
-  static async listTop(topCount: number): Promise<WarriorRecord[]> {}
+  static async listTop(topCount: number): Promise<WarriorRecord[]> {
+    return [];
+  }
 }

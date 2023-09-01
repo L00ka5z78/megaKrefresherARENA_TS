@@ -1,4 +1,5 @@
 import { ValidationError } from '../utils/error';
+import { v4 as uuid } from 'uuid';
 
 export class WarriorRecord {
   public id?: string;
@@ -46,4 +47,17 @@ export class WarriorRecord {
     this.defence = defence;
     this.agility = agility;
   }
+  async insert(): Promise<string> {
+    if (!this.id) {
+      this.id = uuid();
+    }
+  }
+
+  async update(): Promise<void> {}
+
+  static async getOne(id: string): Promise<WarriorRecord | null> {}
+
+  static async listAll(): Promise<WarriorRecord[]> {}
+
+  static async listTop(topCount: number): Promise<WarriorRecord[]> {}
 }

@@ -1,3 +1,5 @@
+import { ValidationError } from '../utils/error';
+
 export class WarriorRecord {
   public id?: string;
   /**
@@ -12,14 +14,29 @@ export class WarriorRecord {
    * ```
    */
   public readonly name: string;
-  public readonly power: string;
-  public readonly defence: string;
-  public readonly stamina: string;
-  public readonly agility: string;
-  public readonly wins: string;
+  public readonly power: number;
+  public readonly defence: number;
+  public readonly stamina: number;
+  public readonly agility: number;
+  public readonly wins?: number;
 
   constructor(obj: Omit<WarriorRecord, 'insert' | 'update'>) {
     const { id, name, stamina, defence, power, wins, agility } = obj;
+
+    const sum = [stamina, defence, power, agility].reduce(
+      (prev, curr) => prev + curr,
+      0
+    );
+    if (sum !== 10) {
+      throw new ValidationError(
+        `All stats sum has to be 10. Now it is ${sum}.`
+      );
+    }
+    if (name.length < 3 && name.length > 50) {
+      throw new ValidationError(
+        `Name has to be between 3 - 50 characters long Right now is ${name.length}`
+      );
+    }
 
     this.id = id;
     this.wins = wins ?? 0;

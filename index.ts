@@ -6,6 +6,7 @@ import { homeRouter } from './routers/home';
 import { warriorRouter } from './routers/warrior';
 import { arenaRouter } from './routers/arena';
 import { hallOfFameRouter } from './routers/hall-of-fame';
+import { WarriorRecord } from './records/warrior.record';
 
 const app = express();
 
@@ -31,6 +32,7 @@ app.use('/arena', arenaRouter);
 app.use('/hall-of-fame', hallOfFameRouter);
 
 // app.use(handleError)
+
 app.listen(3000, 'localhost', () => {
   console.log('Server is ON and running on http://localhost:3000');
 });

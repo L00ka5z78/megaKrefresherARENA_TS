@@ -1,6 +1,9 @@
+import { FieldPacket } from 'mysql2';
 import { pool } from '../utils/db';
 import { ValidationError } from '../utils/error';
 import { v4 as uuid } from 'uuid';
+
+type WarriorRecordResults = [WarriorRecord[], FieldPacket[]];
 
 export class WarriorRecord {
   public id?: string;
@@ -69,14 +72,28 @@ export class WarriorRecord {
     return this.id;
   }
 
-  async update(): Promise<void> {}
+  async update(): Promise<void> {
+    await pool.execute('UPDATE `warriors` SET `wins` = :wins', {
+      wins: this.wins,
+    });
+  }
 
   static async getOne(id: string): Promise<WarriorRecord | null> {
-    return null;
+    const [results] = (await pool.execute(
+      'SELECT * FROM `warriors` WHERE `id` = :id',
+      {
+        id: id,
+      }
+    )) as WarriorRecordResults;
+
+    return results.length === 0 ? null : results[0];
   }
 
   static async listAll(): Promise<WarriorRecord[]> {
-    return [];
+    const [results] = (await pool.execute(
+      'SELECT * FROM `warriors`'
+    )) as WarriorRecordResults;
+    return results.map((obj) => new WarriorRecord(obj));
   }
 
   static async listTop(topCount: number): Promise<WarriorRecord[]> {

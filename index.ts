@@ -1,6 +1,7 @@
-import express, { static as eStatic, urlencoded } from 'express';
+import * as express from 'express';
 import 'express-async-errors';
-import methodOverride from 'method-override';
+import * as methodOverride from 'method-override';
+import { static as eStatic, urlencoded } from 'express';
 import { engine } from 'express-handlebars';
 import { homeRouter } from './routers/home';
 import { warriorRouter } from './routers/warrior';
@@ -19,10 +20,10 @@ app.use(
 );
 app.use(eStatic('public'));
 app.engine(
-  'hbs',
+  '.hbs',
   engine({
     extname: '.hbs',
-    //helpers: ???
+    //helpers??
   })
 );
 app.set('view engine', '.hbs');

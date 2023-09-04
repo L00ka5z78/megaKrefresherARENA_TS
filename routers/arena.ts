@@ -18,6 +18,15 @@ arenaRouter
     if (warrior1Id === warrior2Id) {
       throw new ValidationError('Choose different opponents!');
     }
+    const warrior1 = await WarriorRecord.getOne(warrior1Id);
+    const warrior2 = await WarriorRecord.getOne(warrior2Id);
+
+    if (!warrior1) {
+      throw new ValidationError('Warrior 1 not found...');
+    }
+    if (!warrior2) {
+      throw new ValidationError('Warrior 2 not found...');
+    }
 
     res.render('arena/fight');
   });

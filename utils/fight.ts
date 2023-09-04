@@ -3,7 +3,10 @@ import { WarriorRecord } from '../records/warrior.record';
 export const fight = (
   warrior1: WarriorRecord,
   warrior2: WarriorRecord
-): string[] => {
+): {
+  log: string[];
+  winner: WarriorRecord;
+} => {
   const log: string[] = [];
 
   const warrior1Obj = {
@@ -23,14 +26,40 @@ export const fight = (
   do {
     const attackStrength = attacker.warrior.power;
 
+    log.push(
+      `${attacker.warrior.name} will attack ${defender.warrior.name} with strength of ${attackStrength}`
+    );
+
     if (defender.dp + defender.warrior.agility > attackStrength) {
+      log.push(
+        `${defender.warrior.name} defends from ${attacker.warrior.name} attack`
+      );
       defender.dp -= attackStrength;
 
       if (defender.dp < 0) {
-        defender.hp -= defender.dp;
+        log.push(
+          `${attacker.warrior.name} broke the defence of ${
+            defender.warrior.name
+          } and hit with ${-defender.hp} damage`
+        );
+
+        defender.hp += defender.dp;
+      } else {
+        log.push(
+          `${attacker.warrior.name} hits ${attackStrength} damage ${defender.warrior.name}.`
+        );
+
+        defender.hp -= attackStrength;
       }
     }
-  } while (warrior1TmpStats.hp > 0 && warrior2TmpStats.hp > 0);
+    [defender, attacker] = [attacker, defender];
+  } while (defender.hp > 0);
 
-  return log;
+  const winner = defender.warrior;
+  log.push(`${winner.name} wins!`);
+
+  return {
+    log,
+    winner,
+  };
 };

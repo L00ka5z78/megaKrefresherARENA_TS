@@ -8,13 +8,12 @@ warriorRouter
   .get('/add-form', (req, res) => {
     res.render('warrior/add-form');
   })
-
   .post('/', async (req, res) => {
-    const { name, power, defence, stamina, agility } = req.body;
+    const { agility, power, defence, stamina, name } = req.body;
 
     if (await WarriorRecord.isNameTaken(name)) {
       throw new ValidationError(
-        `Name ${req.body.name} is already taken. Choose different one`
+        `Name ${name} is already taken. Choose a different one`
       );
     }
 
@@ -29,5 +28,5 @@ warriorRouter
     res.render('warrior/warrior-added', {
       id,
       name: warrior.name,
-    });
+    }); //router i nazwa widoku!!
   });

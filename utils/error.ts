@@ -9,6 +9,7 @@ export const handleError = (
   next: NextFunction
 ): void => {
   console.error(err);
+
   res.status(err instanceof ValidationError ? 400 : 500).render('error', {
     message:
       err instanceof ValidationError ? err.message : 'Sorry, try again later',

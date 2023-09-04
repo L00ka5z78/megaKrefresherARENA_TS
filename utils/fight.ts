@@ -14,6 +14,7 @@ export const fight = (
     dp: warrior1.defence,
     warrior: warrior1,
   };
+
   const warrior2Obj = {
     hp: warrior2.stamina * 10,
     dp: warrior2.defence,
@@ -30,11 +31,16 @@ export const fight = (
       `${attacker.warrior.name} will attack ${defender.warrior.name} with strength of ${attackStrength}`
     );
 
+    //dp: 5, hp: 5, attackStrength = 7
+
     if (defender.dp + defender.warrior.agility > attackStrength) {
       log.push(
         `${defender.warrior.name} defends from ${attacker.warrior.name} attack`
       );
+
       defender.dp -= attackStrength;
+
+      //dp: -2, hp: 5
 
       if (defender.dp < 0) {
         log.push(
@@ -44,17 +50,22 @@ export const fight = (
         );
 
         defender.hp += defender.dp;
-      } else {
-        log.push(
-          `${attacker.warrior.name} hits ${attackStrength} damage ${defender.warrior.name}.`
-        );
 
-        defender.hp -= attackStrength;
+        //hp = 5 - 2 = 3
       }
-    }
-    [defender, attacker] = [attacker, defender];
-  } while (defender.hp > 0);
+    } else {
+      log.push(
+        `${attacker.warrior.name} hits ${attackStrength} damage ${defender.warrior.name}.`
+      );
 
+      defender.hp -= attackStrength;
+    }
+    console.log({ attacker, defender });
+
+    [defender, attacker] = [attacker, defender]; //attacker becomes defender
+
+    // } while (defender.hp > 0);
+  } while (attacker.hp > 0);
   const winner = defender.warrior;
   log.push(`${winner.name} wins!`);
 

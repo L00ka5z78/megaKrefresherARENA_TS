@@ -1,13 +1,13 @@
-import { FieldPacket } from 'mysql2';
-import { pool } from '../utils/db';
-import { ValidationError } from '../utils/error';
 import { v4 as uuid } from 'uuid';
+import { ValidationError } from '../utils/error';
+import { pool } from '../utils/db';
+import { FieldPacket } from 'mysql2';
 
 type WarriorRecordResults = [WarriorRecord[], FieldPacket[]];
 
 export class WarriorRecord {
-  public id?: string;
-
+  public id: string;
+  //   public id?: string; //throws err in l.69
   public readonly name: string;
   public readonly power: number;
   public readonly defence: number;
@@ -19,10 +19,7 @@ export class WarriorRecord {
     const { id, name, stamina, defence, power, wins, agility } = obj;
     const stats = [stamina, defence, power, agility];
 
-    const sum = [stamina, defence, power, agility].reduce(
-      (prev, curr) => prev + curr,
-      0
-    );
+    const sum = stats.reduce((prev, curr) => prev + curr, 0);
     if (sum !== 10) {
       throw new ValidationError(
         `All stats sum has to be 10. Now it is ${sum}.`
@@ -40,8 +37,8 @@ export class WarriorRecord {
       );
     }
 
-    this.id = id;
-    this.wins = wins;
+    this.id = id ?? uuid();
+    this.wins = wins ?? 0;
     this.name = name;
     this.stamina = stamina;
     this.power = power;
@@ -49,13 +46,13 @@ export class WarriorRecord {
     this.agility = agility;
   }
   async insert(): Promise<string> {
-    if (!this.id) {
-      this.id = uuid();
-    }
+    // if (!this.id) {
+    //   this.id = uuid();
+    // }
 
-    if (typeof this.wins !== 'number') {
-      this.wins = 0;
-    }
+    // if (typeof this.wins !== 'number') {
+    //   this.wins = 0;
+    // }
 
     await pool.execute(
       'INSERT INTO `warriors`(`id`, `name`, `power`, `defence`, `stamina`, `agility`, `wins`) VALUES (:id, :name, :power, :defence, :stamina, :agility, :wins)',
@@ -104,5 +101,16 @@ export class WarriorRecord {
       }
     )) as WarriorRecordResults;
     return results.map((obj) => new WarriorRecord(obj));
+  }
+
+  static async isNameTaken(name: string): Promise<boolean> {
+    const [results] = (await pool.execute(
+      'SELECT * FROM `warriors` WHERE `name` = :name',
+      {
+        name,
+      }
+    )) as WarriorRecordResults;
+
+    return results.length > 0;
   }
 }

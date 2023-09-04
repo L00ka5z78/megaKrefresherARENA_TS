@@ -10,7 +10,9 @@ warriorRouter
   })
 
   .post('/', async (req, res) => {
-    if (await WarriorRecord.isNameTaken(req.body.name)) {
+    const { name, power, defence, stamina, agility } = req.body;
+
+    if (await WarriorRecord.isNameTaken(name)) {
       throw new ValidationError(
         `Name ${req.body.name} is already taken. Choose different one`
       );
@@ -18,11 +20,14 @@ warriorRouter
 
     const warrior = new WarriorRecord({
       ...req.body,
-      power: Number(req.body.power),
-      defence: Number(req.body.defence),
-      stamina: Number(req.body.stamina),
-      agility: Number(req.body.agility),
+      power: Number(power),
+      defence: Number(defence),
+      stamina: Number(stamina),
+      agility: Number(agility),
     });
-    await warrior.insert();
-    res.render('warrior/warrior-added');
+    const id = await warrior.insert();
+    res.render('warrior/warrior-added', {
+      id,
+      name: warrior.name,
+    });
   });

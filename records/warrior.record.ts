@@ -37,6 +37,11 @@ export class WarriorRecord {
         throw new ValidationError('Each of stats must be at least 1');
       }
     }
+    if (!name) {
+      throw new ValidationError(
+        "You can't fight with unnamed warrior! Please, name your warrior..."
+      );
+    }
 
     if (sum !== 10) {
       throw new ValidationError(`Sum all stats must be 10. Actually is ${sum}`);

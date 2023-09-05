@@ -1,0 +1,146 @@
+@import url('https://fonts.googleapis.com/css2?family=Amatic+SC&family=Rajdhani:wght@600&display=swap');
+
+body {
+  background-image: url('https://www.fightersgeneration.com/nf9/game/stage/mk3-stage-temple.gif');
+  background-position: center;
+  font-family: 'Rajdhani', sans-serif;
+}
+
+.container {
+  margin: 0 auto;
+  max-width: 500px;
+  border: 3px solid #593838;
+  padding: 20px;
+  background-color: #9a9191;
+  border-radius: 10px;
+  box-shadow: 0 0 2em whitesmoke;
+  min-height: 80vh;
+}
+
+.text {
+  margin: 0 auto;
+  width: 350px;
+}
+
+h1 {
+  font-family: 'Amatic SC', cursive;
+  font-size: 3em;
+  text-align: center;
+}
+
+h3,
+h2 {
+  text-align: center;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0 auto;
+  padding: 0;
+  width: 350px;
+  background-color: #f1f1f1;
+}
+
+input {
+  width: 340px;
+  border: none;
+  border-bottom: 1px solid gray;
+}
+
+label {
+  font-size: 0.7em;
+}
+
+button {
+  display: block;
+  font-weight: 400;
+  line-height: 1.5;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  background-color: #04aa6d;
+  border: 1px solid #04aa6d;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+    border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  color: #fff;
+  width: 100%;
+  margin-top: 20px;
+}
+
+button:hover {
+  background-color: #404352;
+  color: #cc3232;
+  border-color: #404352;
+}
+
+li a {
+  display: block;
+  color: #000;
+  padding: 8px 16px;
+  text-decoration: none;
+  transition: color 0.25s ease-in-out, background-color 0.25s ease-in-out,
+    border-color 0.25s ease-in-out, box-shadow 0.25s ease-in-out;
+}
+
+li a.active {
+  background-color: #04aa6d;
+  color: white;
+}
+
+li a:hover {
+  background-color: #404352;
+  color: white;
+}
+
+.error {
+  background-color: #7be107;
+  padding: 30px;
+  border-radius: 6px;
+  border: 2px solid red;
+  margin-top: 30px;
+  text-align: center;
+}
+
+b {
+  font-size: 1.5em;
+  color: #04aa6d;
+}
+
+table {
+  margin-top: 30px;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+td,
+th {
+  text-align: center;
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+thead {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #04aa6d;
+  color: white;
+  font-size: 0.7em;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+tr:hover {
+  background-color: #817676;
+}
+
+select {
+  width: 49%;
+  height: 2.5em;
+  text-align: center;
+  border-color: #04aa6d;
+}
